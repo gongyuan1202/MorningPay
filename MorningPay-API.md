@@ -237,6 +237,9 @@ curl -i -H 'Content-Type: application/json' -H 'x-appkey: 39dd949c-f748-4f9a-962
 热钱包提现请求
 `POST /wallet/transfer/{coin_type}{to}{quantity}{memo}`
 
+获取通过序列号获取提现记录（验证提现记录是否在saas平台存在）
+`GET /wallet/getTransfer/{coin_type}{serial_number}`
+
 #### `POST /wallet/addresses `  获取新的地址
 
 * URL 
