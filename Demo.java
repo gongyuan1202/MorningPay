@@ -159,24 +159,29 @@ public class Demo {
         }
     }
 
-    public void transfer(){
-        JSONObject json = new JSONObject();
-        json.put("coin_type","EOS");
-        json.put("to","kpd1uhb1ulsj");
-        json.put("quantity",0.0001);
-        json.put("memo","");
+ public  void transfer(){
         try {
-            String signStr = "POST|/wallet/transfer|"+"EOS|kpd1uhb1ulsj|0.0001|";
+            JSONObject json = new JSONObject();
+            json.put("coin_type","BTC");
+            json.put("to","1KapsJbKgUQRuPbjUr8GVjaNu6KJY2TEmX");
+            json.put("quantity","1.00000000");
+            json.put("memo","");
+            json.put("serial_number","4");
+            json.put("contractaddress","");
+            json.put("symbol","");
+            String signStr = "POST|/wallet/transfer|"+"BTC|1KapsJbKgUQRuPbjUr8GVjaNu6KJY2TEmX|1.00000000||4||";
+
             byte[] sourcepri_pub = RSATOOL.messageToByte(signStr);
             byte[] signpri_pub =RSATOOL.encryptByRSA1(RSATOOL.strToByte(priKey) ,sourcepri_pub);
-            String rsaValue = byteToStr(signpri_pub);
+            String rsaValue = RSATOOL.byteToStr(signpri_pub);
             System.out.print(rsaValue);
             rsaValue = rsaValue.replaceAll("\r\n","");
-          //  rsaValue = "kKWx9qve3Yl4hQQPlQrgkUmpZ3NxdAECs41Kar6a5I8+DlzRKqTUrhTDkpkCu4ACV3ejb5YpQqvBd0uCzqautZ7j7eRBhJ/qkejLc7/qenROUb8t+Vu1RuAXkfFO3fhyYkPD1fjWbc/7ZE7+rrGBZXqiLeUaQsdMwl7pQiBeBh0=1d37374b351a0d608a79c1230eefc80cc1aa41a5429e5c5944bb14218a6c8c78";
+            rsaValue = rsaValue.replaceAll("\r","");
+            rsaValue = rsaValue.replaceAll("\n","");
             String signValue = SHA256.getSha256(signStr, appsecret);
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, json.toJSONString());
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(url+"wallet/transfer")
                     .addHeader("x-appkey", appkey)
                     .addHeader("x-sign", signValue)
                     .addHeader("x-rsa-sign", rsaValue+"")
@@ -186,67 +191,9 @@ public class Demo {
             String res = response.body().string();
             System.out.print(res);
             response.close();
-
         }catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    tran(){
-//        var signValue ="h8PSAREsVXknWox3lhEuejt9EhveK2LPbb5sNepi/01tBN1V1c6F+owqFHRCDQLwfpZ1Q38rINX4obYf3mONJ8E+VrI4XIOS3c45RoYmV9SNjOc7vBymW0IeESJRWSIAtPodUCMNQqOQVPEEc/dkK3ZQZzgORvc2VUTapk2uwkA="
-//        this.$refs['dataForm'].validate((valid) => {
-//        if (valid) {
-//            this.$http({
-//                    url: this.$http.adornUrl('/wallet/transfer'),
-//                    method: 'post',
-//                    data: this.$http.adornData({
-//                    'coin_type': "EOS",
-//                    'from':"vbuspyjtst3p",
-//                    'to': "kpd1uhb1ulsj",
-//                    'quantity': 0.0001,
-//                    'memo':"",
-//              }),
-//            headers:{
-//                'x-appkey':'39dd949c-f748-4f9a-9620-2d7cb8f850a5',
-//                        'x-sign':"1d37374b351a0d608a79c1230eefc80cc1aa41a5429e5c5944bb14218a6c8c78",
-//                        "x-rsa-sign":"kKWx9qve3Yl4hQQPlQrgkUmpZ3NxdAECs41Kar6a5I8+DlzRKqTUrhTDkpkCu4ACV3ejb5YpQqvBd0uCzqautZ7j7eRBhJ/qkejLc7/qenROUb8t+Vu1RuAXkfFO3fhyYkPD1fjWbc/7ZE7+rrGBZXqiLeUaQsdMwl7pQiBeBh0="
-//            }
-//            }).then(({data}) => {
-//            // console.log("data"+JSON.stringify(data))
-//            if (data && data.code === 0) {
-//                this.$cookie.set('token', data.token)
-//                this.$cookie.set('appkey', data.user.appkey)
-//                this.$cookie.set('appsecret', data.user.appsecret)
-//                this.$cookie.set('userId', data.user.userId)
-//                this.$router.replace({ name: 'demo-echarts' })
-//            } else {
-//                this.getCaptcha()
-//                this.$message.error(data.msg)
-//            }
-//            })
-//        }
-//        })
-//    },
-
-
-
-
-
-
-
-
 
 }
